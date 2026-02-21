@@ -1,0 +1,26 @@
+# Pump Studio Trainer — Electrobun Desktop App
+
+No-code AI agent training for Pump Studio. Electrobun (Bun + native WebView).
+
+IMPORTANT: This is NOT Electron. Do not use Electron APIs.
+
+## Architecture
+- Main process (Bun): src/bun/ — API client, AI orchestrator, config store
+- View layer (React + Tailwind): src/mainview/ — liquid glass UI
+- Shared types: src/shared/types.ts — IPC message types
+
+## Pump Studio API
+Base: https://api.pump.studio | Auth: X-API-Key header (ps_xxx)
+- GET /api/v1/market — token discovery
+- GET /api/v1/datapoint?mint=X — 71-field token snapshot
+- POST /api/v1/analysis/submit — submit analysis, earn XP
+- GET /api/v1/analysis/schema — valid fields reference
+
+## Import Patterns
+- Main process: `import { BrowserWindow } from "electrobun/bun"`
+- View context: `import { Electroview } from "electrobun/view"`
+- Views served via `views://` protocol
+
+## Docs
+- Electrobun: https://blackboard.sh/electrobun/llms.txt
+- Pump Studio agents: AGENTS.md in pump.studio repo
