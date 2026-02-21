@@ -24,24 +24,15 @@ jobs:
       - name: Pre-cache electrobun binaries
         run: |
           EB_DIR="node_modules/electrobun"
-          CORE_URL="https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-core-darwin-arm64.tar.gz"
-          CLI_URL="https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-cli-darwin-arm64.tar.gz"
-          echo "Downloading core binaries..."
-          curl -fSL "$CORE_URL" | tar -xz -C "$EB_DIR"
-          echo "Downloading CLI binary..."
-          curl -fSL "$CLI_URL" | tar -xz -C "$EB_DIR"
-          ls -la "$EB_DIR/dist-macos-arm64/" || true
+          curl -fSL "https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-core-darwin-arm64.tar.gz" | tar -xz -C "$EB_DIR"
+          curl -fSL "https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-cli-darwin-arm64.tar.gz" | tar -xz -C "$EB_DIR"
 
       - run: bun run build:prod
 
       - name: Package macOS artifact
         run: |
-          cd artifacts
-          if ls *.app 1>/dev/null 2>&1; then
-            tar -czf "../PumpStudioTrainer-macos-arm64.tar.gz" *.app
-          else
-            tar -czf "../PumpStudioTrainer-macos-arm64.tar.gz" .
-          fi
+          cd build/macos-arm64
+          tar -czf "../../PumpStudioTrainer-macos-arm64.tar.gz" .
       - uses: actions/upload-artifact@v4
         with:
           name: PumpStudioTrainer-macos-arm64
@@ -60,20 +51,15 @@ jobs:
         shell: bash
         run: |
           EB_DIR="node_modules/electrobun"
-          CORE_URL="https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-core-win-x64.tar.gz"
-          CLI_URL="https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-cli-win-x64.tar.gz"
-          echo "Downloading core binaries..."
-          curl -fSL "$CORE_URL" | tar -xz -C "$EB_DIR"
-          echo "Downloading CLI binary..."
-          curl -fSL "$CLI_URL" | tar -xz -C "$EB_DIR"
-          ls -la "$EB_DIR/dist-win-x64/" || true
+          curl -fSL "https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-core-win-x64.tar.gz" | tar -xz -C "$EB_DIR"
+          curl -fSL "https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-cli-win-x64.tar.gz" | tar -xz -C "$EB_DIR"
 
       - run: bun run build:prod
 
       - name: Package Windows artifact
         shell: pwsh
         run: |
-          Compress-Archive -Path artifacts\* -DestinationPath PumpStudioTrainer-windows-x64.zip
+          Compress-Archive -Path build\win-x64\* -DestinationPath PumpStudioTrainer-windows-x64.zip
       - uses: actions/upload-artifact@v4
         with:
           name: PumpStudioTrainer-windows-x64
@@ -92,20 +78,15 @@ jobs:
       - name: Pre-cache electrobun binaries
         run: |
           EB_DIR="node_modules/electrobun"
-          CORE_URL="https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-core-linux-x64.tar.gz"
-          CLI_URL="https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-cli-linux-x64.tar.gz"
-          echo "Downloading core binaries..."
-          curl -fSL "$CORE_URL" | tar -xz -C "$EB_DIR"
-          echo "Downloading CLI binary..."
-          curl -fSL "$CLI_URL" | tar -xz -C "$EB_DIR"
-          ls -la "$EB_DIR/dist-linux-x64/" || true
+          curl -fSL "https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-core-linux-x64.tar.gz" | tar -xz -C "$EB_DIR"
+          curl -fSL "https://github.com/blackboardsh/electrobun/releases/download/v${ELECTROBUN_VERSION}/electrobun-cli-linux-x64.tar.gz" | tar -xz -C "$EB_DIR"
 
       - run: bun run build:prod
 
       - name: Package Linux artifact
         run: |
-          cd artifacts
-          tar -czf "../PumpStudioTrainer-linux-x64.tar.gz" .
+          cd build/linux-x64
+          tar -czf "../../PumpStudioTrainer-linux-x64.tar.gz" .
       - uses: actions/upload-artifact@v4
         with:
           name: PumpStudioTrainer-linux-x64
