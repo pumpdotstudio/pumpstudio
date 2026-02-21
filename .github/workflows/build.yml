@@ -15,11 +15,19 @@ jobs:
         with:
           bun-version: latest
       - run: bun install
-      - run: bun run build
+      - run: bun run build:prod
+      - name: Package macOS artifact
+        run: |
+          cd artifacts
+          if [ -d "*.app" ] || ls *.app 1>/dev/null 2>&1; then
+            tar -czf "../PumpStudioTrainer-macos-arm64.tar.gz" *.app
+          else
+            tar -czf "../PumpStudioTrainer-macos-arm64.tar.gz" .
+          fi
       - uses: actions/upload-artifact@v4
         with:
-          name: macos-build
-          path: artifacts/
+          name: PumpStudioTrainer-macos-arm64
+          path: PumpStudioTrainer-macos-arm64.tar.gz
 
   build-windows:
     runs-on: windows-latest
@@ -29,11 +37,15 @@ jobs:
         with:
           bun-version: latest
       - run: bun install
-      - run: bun run build
+      - run: bun run build:prod
+      - name: Package Windows artifact
+        shell: pwsh
+        run: |
+          Compress-Archive -Path artifacts\* -DestinationPath PumpStudioTrainer-windows-x64.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: windows-build
-          path: artifacts/
+          name: PumpStudioTrainer-windows-x64
+          path: PumpStudioTrainer-windows-x64.zip
 
   build-linux:
     runs-on: ubuntu-22.04
@@ -44,8 +56,12 @@ jobs:
           bun-version: latest
       - run: sudo apt-get update && sudo apt-get install -y build-essential cmake pkg-config libgtk-3-dev libwebkit2gtk-4.1-dev
       - run: bun install
-      - run: bun run build
+      - run: bun run build:prod
+      - name: Package Linux artifact
+        run: |
+          cd artifacts
+          tar -czf "../PumpStudioTrainer-linux-x64.tar.gz" .
       - uses: actions/upload-artifact@v4
         with:
-          name: linux-build
-          path: artifacts/
+          name: PumpStudioTrainer-linux-x64
+          path: PumpStudioTrainer-linux-x64.tar.gz

@@ -1,0 +1,139 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install
+      - run: bun run build:prod
+      - name: Package macOS artifact
+        run: |
+          cd artifacts
+          if ls *.app 1>/dev/null 2>&1; then
+            tar -czf "../PumpStudioTrainer-macos-arm64.tar.gz" *.app
+          else
+            tar -czf "../PumpStudioTrainer-macos-arm64.tar.gz" .
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PumpStudioTrainer-macos-arm64
+          path: PumpStudioTrainer-macos-arm64.tar.gz
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install
+      - run: bun run build:prod
+      - name: Package Windows artifact
+        shell: pwsh
+        run: |
+          Compress-Archive -Path artifacts\* -DestinationPath PumpStudioTrainer-windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PumpStudioTrainer-windows-x64
+          path: PumpStudioTrainer-windows-x64.zip
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: sudo apt-get update && sudo apt-get install -y build-essential cmake pkg-config libgtk-3-dev libwebkit2gtk-4.1-dev
+      - run: bun install
+      - run: bun run build:prod
+      - name: Package Linux artifact
+        run: |
+          cd artifacts
+          tar -czf "../PumpStudioTrainer-linux-x64.tar.gz" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PumpStudioTrainer-linux-x64
+          path: PumpStudioTrainer-linux-x64.tar.gz
+
+  release:
+    needs: [build-macos, build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: PumpStudioTrainer-macos-arm64
+          path: release/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: PumpStudioTrainer-windows-x64
+          path: release/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: PumpStudioTrainer-linux-x64
+          path: release/
+
+      - name: Generate checksums
+        run: |
+          cd release
+          sha256sum * > checksums-sha256.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}
+          files: |
+            release/PumpStudioTrainer-macos-arm64.tar.gz
+            release/PumpStudioTrainer-windows-x64.zip
+            release/PumpStudioTrainer-linux-x64.tar.gz
+            release/checksums-sha256.txt
+          body: |
+            ## Download
+
+            | Platform | File |
+            |----------|------|
+            | macOS (Apple Silicon) | `PumpStudioTrainer-macos-arm64.tar.gz` |
+            | Windows (x64) | `PumpStudioTrainer-windows-x64.zip` |
+            | Linux (x64) | `PumpStudioTrainer-linux-x64.tar.gz` |
+
+            ### Verify download
+
+            ```bash
+            sha256sum -c checksums-sha256.txt
+            ```
+
+            ### Quick start
+
+            **macOS:**
+            ```bash
+            tar -xzf PumpStudioTrainer-macos-arm64.tar.gz
+            # Open the app or run the extracted binary
+            ```
+
+            **Windows:**
+            Extract the zip and run `PumpStudioTrainer.exe`
+
+            **Linux:**
+            ```bash
+            tar -xzf PumpStudioTrainer-linux-x64.tar.gz
+            chmod +x PumpStudioTrainer
+            ./PumpStudioTrainer
+            ```

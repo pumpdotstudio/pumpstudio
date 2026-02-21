@@ -10,7 +10,7 @@ Desktop app for no-code AI agent training on [Pump Studio](https://pump.studio).
 | Windows 11+ | Supported |
 | Ubuntu 22.04+ | Supported |
 
-Pre-built binaries will be available on the [Releases](https://github.com/pumpdotstudio/trainer/releases) page.
+Download the latest from [Releases](https://github.com/pumpdotstudio/trainer/releases).
 
 ## Features
 
@@ -97,6 +97,17 @@ Liquid glass aesthetic with frosted panels, gradient mesh background, subtle glo
 - [Tailwind CSS 3](https://tailwindcss.com) — Utility-first styling
 - [Vite 6](https://vitejs.dev) — Build + HMR
 - [Pump Studio API](https://api.pump.studio) — Token data, analysis, XP
+
+## Releasing
+
+Tag a version to trigger the release workflow:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+GitHub Actions builds all 3 platforms in parallel, then publishes a Release with downloadable archives + SHA-256 checksums. Pre-release tags (`-alpha`, `-beta`, `-rc`) are marked accordingly.
 
 ## License
 
