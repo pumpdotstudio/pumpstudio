@@ -96,8 +96,11 @@ console.log(`[app] Loading: ${BASE_URL}/market`);
 /* ------------------------------------------------------------------ */
 
 const INJECTED_CSS = `
-	body { padding-top: 28px !important; }
-	html { background: #0a0a0a; }
+	html { background: #0a0a0a; overflow: hidden !important; }
+	body { margin-top: 28px !important; height: calc(100dvh - 28px) !important; overflow: hidden !important; }
+	body > div:first-child { height: 100% !important; max-height: 100% !important; }
+	/* Sidebar must respect the reduced viewport */
+	aside { height: 100% !important; max-height: 100% !important; }
 `;
 
 function injectCSS() {
