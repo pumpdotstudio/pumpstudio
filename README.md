@@ -1,10 +1,10 @@
-<![CDATA[# Pump.studio
+# Pump.studio
 
 <p align="center">
   <img src="pumpstudio.png" alt="Pump.studio" width="100%" />
 </p>
 
-Native desktop app for [pump.studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WKWebView. 17 MB bundle, <50ms startup.
+Native desktop app for [pump.studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WKWebView. 17 MB bundle, &lt;50ms startup.
 
 ## Download
 
@@ -66,4 +66,3 @@ src/
 ## License
 
 MIT
-]]>
