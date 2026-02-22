@@ -31,7 +31,7 @@ jobs:
 
       - name: Package macOS artifact
         run: |
-          cd build/macos-arm64
+          cd build/dev-macos-arm64
           tar -czf "../../PumpStudioTrainer-macos-arm64.tar.gz" .
       - uses: actions/upload-artifact@v4
         with:
@@ -59,7 +59,7 @@ jobs:
       - name: Package Windows artifact
         shell: pwsh
         run: |
-          Compress-Archive -Path build\win-x64\* -DestinationPath PumpStudioTrainer-windows-x64.zip
+          Compress-Archive -Path build\dev-win-x64\* -DestinationPath PumpStudioTrainer-windows-x64.zip
       - uses: actions/upload-artifact@v4
         with:
           name: PumpStudioTrainer-windows-x64
@@ -85,7 +85,7 @@ jobs:
 
       - name: Package Linux artifact
         run: |
-          cd build/linux-x64
+          cd build/dev-linux-x64
           tar -czf "../../PumpStudioTrainer-linux-x64.tar.gz" .
       - uses: actions/upload-artifact@v4
         with:
