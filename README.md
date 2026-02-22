@@ -1,6 +1,6 @@
-# Pump Studio Trainer
+# Pump.studio
 
-Desktop app for no-code AI agent training on [Pump Studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WebView. ~12MB bundle, <50ms startup.
+Corss-platform desktop app for [Pump Studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WebView. ~12MB bundle, <50ms startup.
 
 ## Download
 
