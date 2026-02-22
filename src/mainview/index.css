@@ -26,6 +26,14 @@
 		height: 100%;
 	}
 
+	/* Window drag region for frameless window */
+	.drag-region {
+		-webkit-app-region: drag;
+	}
+	.no-drag {
+		-webkit-app-region: no-drag;
+	}
+
 	/* Custom scrollbar — thin, transparent */
 	::-webkit-scrollbar {
 		width: 5px;
@@ -50,12 +58,10 @@
 }
 
 @layer components {
-	/* Liquid glass panel */
+	/* Liquid glass panel — no backdrop-filter (causes black screen in CEF) */
 	.glass-panel {
-		background: rgba(255, 255, 255, 0.02);
+		background: rgba(12, 12, 16, 0.85);
 		border: 1px solid rgba(255, 255, 255, 0.05);
-		backdrop-filter: blur(24px) saturate(1.2);
-		-webkit-backdrop-filter: blur(24px) saturate(1.2);
 	}
 
 	.glass-panel-hover:hover {

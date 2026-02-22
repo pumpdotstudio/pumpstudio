@@ -3,13 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pump Studio Trainer</title>
+    <title>Pump.Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="loading" style="display:flex;align-items:center;justify-content:center;height:100vh;background:#050508;color:#22c55e;font-family:monospace;font-size:16px">
+        Loading Pump.Studio...
+      </div>
+    </div>
     <script type="module" src="/main.tsx"></script>
+    <script>
+      window.onerror = function(msg, url, line, col, err) {
+        document.getElementById('loading').innerHTML =
+          '<div style="padding:40px;color:#ef4444;font-size:12px;white-space:pre-wrap;max-width:800px">' +
+          'JS ERROR:\\n' + msg + '\\n' + url + ':' + line + ':' + col +
+          (err && err.stack ? '\\n\\nStack:\\n' + err.stack : '') + '</div>';
+      };
+    </script>
   </body>
 </html>

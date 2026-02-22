@@ -1,35 +1,167 @@
-import { BrowserWindow, Updater, Utils } from "electrobun/bun";
+import Electrobun, { BrowserWindow, ApplicationMenu, Utils } from "electrobun/bun";
 import { PumpStudioApi } from "./api";
 import { Orchestrator } from "./orchestrator";
 import { ConfigStore } from "./config";
 import { buildSnapshot } from "./defaults";
 
 /* ------------------------------------------------------------------ */
+/*  Native macOS menus                                                  */
+/* ------------------------------------------------------------------ */
+
+ApplicationMenu.setApplicationMenu([
+	{
+		label: "Pump.studio",
+		submenu: [
+			{ role: "about", label: "About Pump.studio" },
+			{ type: "separator" },
+			{ role: "hide", label: "Hide Pump.studio", accelerator: "Command+H" },
+			{ role: "hideOthers", label: "Hide Others", accelerator: "Command+Option+H" },
+			{ role: "showAll", label: "Show All" },
+			{ type: "separator" },
+			{ role: "quit", label: "Quit Pump.studio", accelerator: "Command+Q" },
+		],
+	},
+	{
+		label: "Edit",
+		submenu: [
+			{ role: "undo", label: "Undo", accelerator: "Command+Z" },
+			{ role: "redo", label: "Redo", accelerator: "Command+Shift+Z" },
+			{ type: "separator" },
+			{ role: "cut", label: "Cut", accelerator: "Command+X" },
+			{ role: "copy", label: "Copy", accelerator: "Command+C" },
+			{ role: "paste", label: "Paste", accelerator: "Command+V" },
+			{ role: "selectAll", label: "Select All", accelerator: "Command+A" },
+		],
+	},
+	{
+		label: "View",
+		submenu: [
+			{ label: "Reload", accelerator: "Command+R", action: "view:reload" },
+			{ label: "Hard Reload", accelerator: "Command+Shift+R", action: "view:hard-reload" },
+			{ type: "separator" },
+			{ label: "Market", accelerator: "Command+1", action: "nav:market" },
+			{ label: "Livestreams", accelerator: "Command+2", action: "nav:streams" },
+			{ label: "Leaderboard", accelerator: "Command+3", action: "nav:leaderboard" },
+			{ label: "DataPoint", accelerator: "Command+4", action: "nav:datapoint" },
+			{ type: "separator" },
+			{ label: "Toggle Full Screen", role: "toggleFullScreen", accelerator: "Command+Control+F" },
+		],
+	},
+	{
+		label: "Go",
+		submenu: [
+			{ label: "Back", accelerator: "Command+[", action: "nav:back" },
+			{ label: "Forward", accelerator: "Command+]", action: "nav:forward" },
+			{ type: "separator" },
+			{ label: "Home", accelerator: "Command+Shift+H", action: "nav:home" },
+		],
+	},
+	{
+		label: "Window",
+		submenu: [
+			{ role: "minimize", label: "Minimize", accelerator: "Command+M" },
+			{ role: "zoom", label: "Zoom" },
+			{ type: "separator" },
+			{ role: "bringAllToFront", label: "Bring All to Front" },
+		],
+	},
+	{
+		label: "Help",
+		submenu: [
+			{ label: "Pump.studio Docs", action: "help:docs" },
+			{ label: "Report Issue", action: "help:report" },
+			{ type: "separator" },
+			{ label: "Twitter @pumpdotstudio", action: "help:twitter" },
+		],
+	},
+]);
+
+/* ------------------------------------------------------------------ */
 /*  Bootstrap                                                           */
 /* ------------------------------------------------------------------ */
 
-const DEV_PORT = 5173;
-
-async function resolveUrl(): Promise<string> {
-	const channel = await Updater.localInfo.channel();
-	if (channel === "dev") {
-		try {
-			await fetch(`http://localhost:${DEV_PORT}`, { method: "HEAD" });
-			console.log(`[trainer] HMR: http://localhost:${DEV_PORT}`);
-			return `http://localhost:${DEV_PORT}`;
-		} catch {}
-	}
-	return "views://mainview/index.html";
-}
-
-const url = await resolveUrl();
+const BASE_URL = "https://pump.studio";
 
 const win = new BrowserWindow({
-	title: "Pump Studio Trainer",
-	url,
+	title: "Pump.studio",
+	url: `${BASE_URL}/market`,
 	frame: { width: 1280, height: 860, x: 100, y: 100 },
 	titleBarStyle: "hiddenInset",
-	transparent: false,
+});
+
+console.log(`[app] Loading: ${BASE_URL}/market`);
+
+/* ------------------------------------------------------------------ */
+/*  CSS injection — persistent across navigations                       */
+/* ------------------------------------------------------------------ */
+
+const INJECTED_CSS = `
+	body { padding-top: 28px !important; }
+	html { background: #0a0a0a; }
+`;
+
+function injectCSS() {
+	try {
+		win.webview.executeJavascript(`
+			if (!document.getElementById('__ps_desktop')) {
+				const s = document.createElement('style');
+				s.id = '__ps_desktop';
+				s.textContent = ${JSON.stringify(INJECTED_CSS)};
+				document.head.appendChild(s);
+			}
+		`);
+	} catch {}
+}
+
+/* Re-inject on every navigation */
+setInterval(injectCSS, 1000);
+setTimeout(injectCSS, 500);
+
+/* ------------------------------------------------------------------ */
+/*  Menu action handlers                                                */
+/* ------------------------------------------------------------------ */
+
+Electrobun.events.on("application-menu-clicked", (event: { data: { action: string } }) => {
+	const { action } = event.data;
+
+	switch (action) {
+		case "view:reload":
+			win.webview.executeJavascript("location.reload()");
+			break;
+		case "view:hard-reload":
+			win.webview.executeJavascript("location.reload(true)");
+			break;
+		case "nav:market":
+			win.webview.executeJavascript(`location.href='${BASE_URL}/market'`);
+			break;
+		case "nav:streams":
+			win.webview.executeJavascript(`location.href='${BASE_URL}/streams'`);
+			break;
+		case "nav:leaderboard":
+			win.webview.executeJavascript(`location.href='${BASE_URL}/leaderboard'`);
+			break;
+		case "nav:datapoint":
+			win.webview.executeJavascript(`location.href='${BASE_URL}/datapoint'`);
+			break;
+		case "nav:back":
+			win.webview.executeJavascript("history.back()");
+			break;
+		case "nav:forward":
+			win.webview.executeJavascript("history.forward()");
+			break;
+		case "nav:home":
+			win.webview.executeJavascript(`location.href='${BASE_URL}/market'`);
+			break;
+		case "help:docs":
+			win.webview.executeJavascript(`window.open('https://pump.studio/docs','_blank')`);
+			break;
+		case "help:report":
+			win.webview.executeJavascript(`window.open('https://github.com/pumpdotstudio/app/issues','_blank')`);
+			break;
+		case "help:twitter":
+			win.webview.executeJavascript(`window.open('https://x.com/pumpdotstudio','_blank')`);
+			break;
+	}
 });
 
 /* ------------------------------------------------------------------ */
@@ -175,4 +307,4 @@ win.on("close", () => {
 	Utils.quit();
 });
 
-console.log("[trainer] Pump Studio Trainer started");
+console.log("[app] Pump.studio started");

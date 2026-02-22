@@ -30,7 +30,13 @@ export default function App() {
 	const handleXp = (xp: number) => setXpTotal((p) => p + xp);
 
 	return (
-		<div className="h-screen flex mesh-bg overflow-hidden">
+		<div className="h-screen flex flex-col mesh-bg overflow-hidden">
+			{/* Frameless window drag bar */}
+			<div className="drag-region h-8 flex-shrink-0 flex items-center px-20">
+				<span className="text-[10px] text-white/20 font-medium tracking-wider">PUMP.STUDIO</span>
+			</div>
+
+			<div className="flex flex-1 overflow-hidden">
 			<Sidebar
 				view={view}
 				onNavigate={setView}
@@ -52,6 +58,7 @@ export default function App() {
 				{view === "leaderboard" && <Leaderboard />}
 				{view === "settings" && <Settings config={config} onSave={setConfig} />}
 			</main>
+			</div>
 		</div>
 	);
 }

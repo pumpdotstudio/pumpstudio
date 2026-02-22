@@ -72,14 +72,12 @@ export function Sidebar({ view, onNavigate, xpTotal, connected }: SidebarProps) 
 	return (
 		<aside className="w-56 flex flex-col glass-panel border-r border-white/[0.04] select-none">
 			{/* Brand */}
-			<div className="px-5 pt-6 pb-4">
+			<div className="px-5 pt-4 pb-4">
 				<div className="flex items-center gap-2.5">
-					<div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#22c55e] to-[#16a34a] flex items-center justify-center glow-green">
-						<span className="text-black text-xs font-bold">P</span>
-					</div>
+					<img src="./assets/pill2.png" alt="" className="w-7 h-7 rounded-lg" />
 					<div>
 						<div className="text-[13px] font-semibold text-white/90 tracking-tight">
-							Pump Studio
+							Pump.Studio
 						</div>
 						<div className="text-[10px] text-white/30 font-medium tracking-wider uppercase">
 							Trainer
