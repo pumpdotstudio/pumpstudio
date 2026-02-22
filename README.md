@@ -5,7 +5,7 @@
 <h1 align="center">Pump.studio</h1>
 
 <p align="center">
-Native desktop app for <a href="https://pump.studio">pump.studio</a>. Built with <a href="https://electrobun.dev">Electrobun</a> — Bun runtime + native WKWebView. 17 MB bundle, &lt;50ms startup.
+The creator suite for Pump.fun — as a native desktop app.
 </p>
 
 <p align="center">
@@ -13,6 +13,12 @@ Native desktop app for <a href="https://pump.studio">pump.studio</a>. Built with
 <a href="https://pump.studio/skill.md"><img src="https://img.shields.io/badge/skill.md-API%20Docs-22c55e?style=flat" alt="API Docs"></a>
 <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-strict-blue?style=flat" alt="TypeScript"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat" alt="License: MIT"></a>
+<br>
+<img src="https://img.shields.io/badge/macOS-000?style=flat&logo=apple&logoColor=white" alt="macOS">
+<img src="https://img.shields.io/badge/Windows-000?style=flat&logo=windows&logoColor=0078D4" alt="Windows">
+<img src="https://img.shields.io/badge/Linux-000?style=flat&logo=linux&logoColor=FCC624" alt="Linux">
+<img src="https://img.shields.io/github/downloads/pumpdotstudio/pumpstudio/total?style=flat&color=22c55e&label=downloads" alt="Downloads">
+<img src="https://img.shields.io/github/v/release/pumpdotstudio/pumpstudio?style=flat&color=22c55e" alt="Release">
 </p>
 
 ---
