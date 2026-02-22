@@ -1,114 +1,69 @@
-# Pump.studio
+<![CDATA[# Pump.studio
 
-Corss-platform desktop app for [Pump Studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WebView. ~12MB bundle, <50ms startup.
+<p align="center">
+  <img src="pumpstudio.png" alt="Pump.studio" width="100%" />
+</p>
+
+Native desktop app for [pump.studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WKWebView. 17 MB bundle, <50ms startup.
 
 ## Download
 
+Download the latest from [Releases](https://github.com/pumpdotstudio/pumpstudio/releases).
+
 | Platform | Status |
 |----------|--------|
-| macOS 14+ | Supported |
-| Windows 11+ | Supported |
-| Ubuntu 22.04+ | Supported |
-
-Download the latest from [Releases](https://github.com/pumpdotstudio/trainer/releases).
+| macOS ARM64 (M1/M2/M3/M4) | [v0.1.0](https://github.com/pumpdotstudio/pumpstudio/releases/tag/v0.1.0) |
+| macOS Intel | Coming soon |
+| Windows | Coming soon |
+| Linux | Coming soon |
 
 ## Features
 
-- **Token Discovery** — Browse live, new, and graduated Pump.fun tokens
-- **Guided Analysis** — 4-section wizard with smart defaults computed from 71 on-chain metrics
-- **AI Orchestration** — Connect Claude or GPT-4o for AI-generated analysis (no code required)
-- **Auto-Training** — Batch-select tokens, press Start, watch XP accumulate
-- **Leaderboard** — Track global analysis stats and agent rankings
-- **Persistent Config** — API keys saved locally at `~/.pump-studio/trainer.json`
+- **Native macOS menus** — Pump.studio, Edit, View, Go, Window, Help
+- **Keyboard shortcuts** — Cmd+1-4 navigation, Cmd+R reload, Cmd+[] back/forward
+- **Hidden title bar** — Traffic light integration with content padding
+- **17 MB app** — No CEF bundled, uses native WKWebView
+- **Auto-updates** — Wraps pump.studio — always up to date
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/pumpdotstudio/trainer.git
-cd trainer
+git clone https://github.com/pumpdotstudio/pumpstudio.git
+cd pumpstudio
 bun install
 bun run dev
 ```
 
-### Development with HMR
-
-```bash
-bun run dev:hmr
-```
-
-Edit `src/mainview/` — changes hot-reload instantly via Vite.
-
 ### Production Build
 
 ```bash
-bun run build:prod
+npx electrobun build --env=stable
 ```
 
-Cross-platform artifacts output to `artifacts/`.
+Artifacts output to `artifacts/`. The `.app` bundle is in `build/stable-macos-arm64/`.
 
 ## Architecture
 
 ```
 src/
 ├── bun/                    # Main process (Bun runtime)
-│   ├── index.ts            # Window, IPC handlers, auto-training loop
+│   ├── index.ts            # Window, menus, CSS injection, IPC, auto-training
 │   ├── api.ts              # Pump Studio HTTP client
 │   ├── orchestrator.ts     # Claude / Codex / manual AI analysis
 │   ├── defaults.ts         # Smart defaults from token metrics
 │   └── config.ts           # Persistent ~/.pump-studio/trainer.json
-├── mainview/               # UI (React 18 + Tailwind, native WebView)
-│   ├── App.tsx             # Root + navigation
-│   ├── components/
-│   │   ├── Sidebar.tsx     # Glass sidebar with nav + status
-│   │   ├── TokenBrowser.tsx    # Token discovery table
-│   │   ├── AnalysisWizard.tsx  # Full analysis form
-│   │   ├── AutoTrainer.tsx     # Batch training console
-│   │   ├── Leaderboard.tsx     # Global stats + rankings
-│   │   └── Settings.tsx        # API keys, orchestrator config
-│   └── lib/
-│       ├── rpc.ts          # Typed postMessage bridge
-│       ├── format.ts       # USD, %, compact formatters
-│       └── defaults.ts     # Client-side smart defaults
+├── mainview/               # UI (React 18 + Tailwind, for local views)
 └── shared/
     └── types.ts            # Shared Bun <-> WebView types
 ```
 
-## Configuration
-
-1. Launch the app
-2. Go to **Settings**
-3. Enter your Pump Studio API key (`ps_xxx`)
-4. (Optional) Select Claude or Codex as orchestrator and add the API key
-5. Start analyzing tokens
-
-Environment variables are also supported:
-- `PUMP_STUDIO_API_KEY` — Pump Studio API key
-- `ANTHROPIC_API_KEY` — Claude API key
-- `OPENAI_API_KEY` — OpenAI API key
-
-## Design
-
-Liquid glass aesthetic with frosted panels, gradient mesh background, subtle glow effects, and smooth animations. Dark theme throughout. Font stack: SF Pro Display for UI, JetBrains Mono for data.
-
 ## Stack
 
 - [Electrobun](https://electrobun.dev) — Desktop framework (Bun + native WebView)
-- [React 18](https://react.dev) — UI components
-- [Tailwind CSS 3](https://tailwindcss.com) — Utility-first styling
-- [Vite 6](https://vitejs.dev) — Build + HMR
+- [pump.studio](https://pump.studio) — Web app (Next.js 15, Convex, Solana)
 - [Pump Studio API](https://api.pump.studio) — Token data, analysis, XP
-
-## Releasing
-
-Tag a version to trigger the release workflow:
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-GitHub Actions builds all 3 platforms in parallel, then publishes a Release with downloadable archives + SHA-256 checksums. Pre-release tags (`-alpha`, `-beta`, `-rc`) are marked accordingly.
 
 ## License
 
 MIT
+]]>
