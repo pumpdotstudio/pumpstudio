@@ -1,15 +1,19 @@
-# Pump.studio
-
 <p align="center">
   <img src="pumpstudio.png" alt="Pump.studio" width="100%" />
 </p>
 
-Native desktop app for [pump.studio](https://pump.studio). Built with [Electrobun](https://electrobun.dev) — Bun runtime + native WKWebView. 17 MB bundle, <50ms startup.
+<h1 align="center">Pump.studio</h1>
 
-[![Pump.studio](https://img.shields.io/badge/Pump.studio-000?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iIzIyYzU1ZSI+PGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjgiLz48L3N2Zz4=&logoColor=22c55e)](https://pump.studio)
-[![API Docs](https://img.shields.io/badge/skill.md-API%20Docs-22c55e?style=flat)](https://pump.studio/skill.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?style=flat)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat)](LICENSE)
+<p align="center">
+Native desktop app for <a href="https://pump.studio">pump.studio</a>. Built with <a href="https://electrobun.dev">Electrobun</a> — Bun runtime + native WKWebView. 17 MB bundle, &lt;50ms startup.
+</p>
+
+<p align="center">
+<a href="https://pump.studio"><img src="https://img.shields.io/badge/Pump.studio-000?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iIzIyYzU1ZSI+PGNpcmNsZSBjeD0iOCIgY3k9IjgiIHI9IjgiLz48L3N2Zz4=&logoColor=22c55e" alt="Pump.studio"></a>
+<a href="https://pump.studio/skill.md"><img src="https://img.shields.io/badge/skill.md-API%20Docs-22c55e?style=flat" alt="API Docs"></a>
+<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-strict-blue?style=flat" alt="TypeScript"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat" alt="License: MIT"></a>
+</p>
 
 ---
 
